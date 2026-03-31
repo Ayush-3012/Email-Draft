@@ -14,9 +14,6 @@ type ApiResponse = {
   [key: string]: unknown;
 };
 
-const WEBHOOK_URL =
-  process.env.NEXT_PUBLIC_WEBHOOK_GENERATE_URL ?? "YOUR_WEBHOOK_URL";
-
 const INDUSTRY_OPTIONS = [
   "CA Firms & Accounting",
   "Real Estate Agencies",
@@ -200,15 +197,10 @@ export default function Home() {
       return;
     }
 
-    if (WEBHOOK_URL === "YOUR_WEBHOOK_URL") {
-      setError("Set NEXT_PUBLIC_WEBHOOK_URL in .env.local first.");
-      return;
-    }
-
     try {
       setLoading(true);
 
-      const res = await fetch(WEBHOOK_URL, {
+      const res = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -258,7 +250,14 @@ export default function Home() {
       <main className="relative z-10 mx-auto w-full max-w-300 px-4 py-4">
         <header className="mb-4 text-center">
           <h1 className="text-2xl font-extrabold text-slate-100 md:text-3xl">
-            Email Drafter <Image src="/logo-2.png" width={100} height={100} alt="Logo" className="inline-block h-10 ml-1 w-16" />
+            Email Drafter{" "}
+            <Image
+              src="/logo-2.png"
+              width={100}
+              height={100}
+              alt="Logo"
+              className="inline-block h-10 ml-1 w-16"
+            />
           </h1>
           <p className="text-base text-slate-400 md:text-lg">
             Craft the perfect email for any industry in seconds.
